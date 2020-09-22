@@ -1,0 +1,50 @@
+name: python-datastack
+base: core18
+version: latest
+summary: Python development environment for data science.
+description: |
+    jupyter notebook, ipython with pre-installed python libraries for data analytics.
+
+grade: devel
+confinement: devmode
+
+architectures:
+  - build-on: [amd64]
+
+apps:
+  jupyter:
+    command: jupyter notebook  --NotebookApp.allow_origin="*" --NotebookApp.port=8890 --ip='0.0.0.0'
+    plugs: [home, network, network-bind] 
+    environment: {
+      LANG: C.UTF-8,
+      LC_ALL: C.UTF-8
+    }
+    
+  ipython:
+    command: bin/ipython
+  
+  pip:
+    command: usr/bin/pip3
+
+
+parts:
+  jupyter:
+    plugin: python
+    python-version: python3
+    build-packages:
+      - build-essential
+    stage-packages:
+      - python3-pip
+    python-packages:
+      - jupyter
+      - numpy
+      - pandas
+      - matplotlib
+      - seaborn
+      - scikit-learn
+      - statsmodels
+      - sqlalchemy
+      - modin[all]
+
+    
+
